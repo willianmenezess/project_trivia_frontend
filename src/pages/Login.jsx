@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addEmail } from '../redux/actions';
+import createToken from '../services/api';
 
 class Login extends Component {
   state = {
@@ -26,6 +30,15 @@ class Login extends Component {
     }
   };
 
+  handleClick = async (event) => {
+    event.preventDefault();
+    const { history, dispatch } = this.props;
+    const { inputEmail } = this.state;
+    dispatch(addEmail(inputEmail));
+    await createToken();
+    history.push('/game');
+  };
+
   render() {
     const { inputEmail, inputName, onDisabled } = this.state;
     return (
@@ -50,6 +63,7 @@ class Login extends Component {
           data-testid="btn-play"
           type="submit"
           disabled={ onDisabled }
+          onClick={ this.handleClick }
         >
           Play
         </button>
@@ -58,4 +72,11 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default connect()(Login);
