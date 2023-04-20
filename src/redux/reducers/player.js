@@ -1,3 +1,5 @@
+import { ADD_EMAIL, ADD_PLAYER } from '../actions';
+
 const INITIAL_STATE = {
   email: '',
   playerName: '',
@@ -7,6 +9,16 @@ const INITIAL_STATE = {
 
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case ADD_EMAIL:
+    return {
+      ...state,
+      email: action.payload.email,
+    };
+  case ADD_PLAYER:
+    return {
+      ...state,
+      playerName: action.payload.player,
+    };
   default:
     return state;
   }
