@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { fetchQuestionsThunk } from '../redux/actions';
 import { fetchQuestions } from '../services/api';
+import Questions from '../components/Questions';
 
 class Game extends Component {
-  componentDidMount() {
+  async componentDidMount() {
     const NUMBER_ERROR_CODE = 3;
     const { dispatch, history } = this.props;
-    const data = fetchQuestions();
+    const data = await fetchQuestions();
     if (data.response_code === NUMBER_ERROR_CODE) {
       localStorage.removeItem('token');
       history.push('/');
@@ -21,6 +22,7 @@ class Game extends Component {
       <section>
         <h3>Game</h3>
         <Header />
+        <Questions />
       </section>
     );
   }
