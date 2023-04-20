@@ -53,7 +53,7 @@ class Login extends Component {
         />
         <input
           data-testid="input-gravatar-email"
-          type="text"
+          type="email"
           placeholder="Email"
           name="inputEmail"
           value={ inputEmail }
