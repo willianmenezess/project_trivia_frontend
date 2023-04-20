@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addEmail } from '../redux/actions';
+import { addEmail, addPlayerName } from '../redux/actions';
 import createToken from '../services/api';
 
 class Login extends Component {
@@ -33,8 +33,9 @@ class Login extends Component {
   handleClick = async (event) => {
     event.preventDefault();
     const { history, dispatch } = this.props;
-    const { inputEmail } = this.state;
+    const { inputEmail, inputName } = this.state;
     dispatch(addEmail(inputEmail));
+    dispatch(addPlayerName(inputName));
     await createToken();
     history.push('/game');
   };
@@ -81,7 +82,7 @@ class Login extends Component {
     );
   }
 }
-// teste
+
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
