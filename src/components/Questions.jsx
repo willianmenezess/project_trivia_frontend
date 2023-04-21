@@ -20,16 +20,13 @@ class Questions extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // Verifica se as perguntas foram atualizadas
+    // Verifica se houve uma atualização nas propriedades "questions"
     const { questions } = this.props;
     const { questions: prevQuestions } = prevProps;
-
     if (prevQuestions !== questions) {
-      // Reinicia o timer e embaralha as respostas novamente
-      this.setState({ answered: false, timeRemaining: 30 });
+      // Se houver, busca e atualiza as novas respostas
       const allAnswers = this.shuffleAnswers();
       this.setState({ allAnswers });
-      this.startTimer();
     }
   }
 
