@@ -14,7 +14,9 @@ class Game extends Component {
     if (data.response_code === NUMBER_ERROR_CODE) {
       localStorage.removeItem('token');
       history.push('/');
-    } else { dispatch(fetchQuestionsThunk()); }
+    } else {
+      dispatch(fetchQuestionsThunk());
+    }
   }
 
   render() {
@@ -28,16 +30,11 @@ class Game extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   questions: state.questions.questions,
-// });
-
 Game.propTypes = {
   dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  // questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default connect()(Game);
