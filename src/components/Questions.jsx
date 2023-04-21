@@ -9,16 +9,31 @@ const incorrectCollor = '3px solid red';
 class Questions extends Component {
   state = {
     answered: false,
-    timeRemaining: 30, // Inicializa o tempo restante como 30 segundos
+    timeRemaining: 30,
+    allAnswers: [], // Adiciona um novo estado para armazenar as respostas embaralhadas
   };
 
   componentDidMount() {
-    // Inicia o timer assim que o componente for montado
     this.startTimer();
+    const allAnswers = this.shuffleAnswers();
+    this.setState({ allAnswers });
+  }
+
+  componentDidUpdate(prevProps) {
+    // Verifica se as perguntas foram atualizadas
+    const { questions } = this.props;
+    const { questions: prevQuestions } = prevProps;
+
+    if (prevQuestions !== questions) {
+      // Reinicia o timer e embaralha as respostas novamente
+      this.setState({ answered: false, timeRemaining: 30 });
+      const allAnswers = this.shuffleAnswers();
+      this.setState({ allAnswers });
+      this.startTimer();
+    }
   }
 
   componentWillUnmount() {
-    // Limpa o timer quando o componente for desmontado
     clearTimeout(this.timer);
   }
 
@@ -26,14 +41,12 @@ class Questions extends Component {
     const number = 25;
     const { answered, timeRemaining } = this.state;
     if (!answered && timeRemaining > number) {
-      // Verifica se ainda é possível aguardar 5 segundos e responder a alternativa correta
-      clearTimeout(this.timer); // Cancela o timer
+      clearTimeout(this.timer);
       this.setState({ answered: true });
     }
   }
 
   startTimer = () => {
-    // Atualiza o estado a cada segundo e decrementa o tempo restante
     const number = 1000;
     this.timer = setTimeout(() => {
       const { timeRemaining } = this.state;
@@ -41,28 +54,41 @@ class Questions extends Component {
         this.setState({ timeRemaining: timeRemaining - 1 });
         this.startTimer();
       } else {
-        // Desabilita todos os botões quando o tempo acabar
         this.setState({ answered: true });
       }
     }, number);
   };
 
-  render() {
+  shuffleAnswers = () => {
     const { questions } = this.props;
-    const { answered, timeRemaining } = this.state;
     const currentQuestion = questions[0];
+
+    if (currentQuestion) {
+      const { correct_answer: correctAnswer,
+        incorrect_answers: incorrectAnswers } = currentQuestion;
+
+      const allAnswers = [
+        { answer: correctAnswer, correct: true },
+        ...incorrectAnswers.map((answer) => ({ answer, correct: false })),
+      ].sort(() => Math.random() - RANDOM_NUMBER);
+
+      return allAnswers;
+    }
+
+    return [];
+  };
+
+  render() {
+    const { answered, timeRemaining, allAnswers } = this.state;
+    const { questions } = this.props;
 
     if (!questions || questions.length === 0) {
       return <div>Carregando...</div>;
     }
 
-    const { category, question, correct_answer:
-      correctAnswer, incorrect_answers: incorrectAnswers } = currentQuestion;
+    const currentQuestion = questions[0];
 
-    const allAnswers = [
-      { answer: correctAnswer, correct: true },
-      ...incorrectAnswers.map((answer) => ({ answer, correct: false })),
-    ].sort(() => Math.random() - RANDOM_NUMBER);
+    const { category, question } = currentQuestion;
 
     return (
       <div>
@@ -82,10 +108,11 @@ class Questions extends Component {
                 data-testid={ questionResult }
                 onClick={ () => this.handleAnswerClick(answerObj) }
                 style={ buttonStyle }
-                disabled={ answered || timeRemaining === 0 } // Desabilita os botões quando o tempo acabar
+                disabled={ answered || timeRemaining === 0 }
               >
                 {answerObj.answer}
-              </button>
+              </button
+              >
             );
           })}
         </div>
