@@ -9,25 +9,55 @@ const incorrectCollor = '3px solid red';
 class Questions extends Component {
   state = {
     answered: false,
+    timeRemaining: 30, // Inicializa o tempo restante como 30 segundos
   };
 
-  handleAnswerClick() {
-    this.setState({
-      answered: true,
-    });
+  componentDidMount() {
+    // Inicia o timer assim que o componente for montado
+    this.startTimer();
   }
+
+  componentWillUnmount() {
+    // Limpa o timer quando o componente for desmontado
+    clearTimeout(this.timer);
+  }
+
+  handleAnswerClick() {
+    const number = 25;
+    const { answered, timeRemaining } = this.state;
+    if (!answered && timeRemaining > number) {
+      // Verifica se ainda é possível aguardar 5 segundos e responder a alternativa correta
+      clearTimeout(this.timer); // Cancela o timer
+      this.setState({ answered: true });
+    }
+  }
+
+  startTimer = () => {
+    // Atualiza o estado a cada segundo e decrementa o tempo restante
+    const number = 1000;
+    this.timer = setTimeout(() => {
+      const { timeRemaining } = this.state;
+      if (timeRemaining > 0) {
+        this.setState({ timeRemaining: timeRemaining - 1 });
+        this.startTimer();
+      } else {
+        // Desabilita todos os botões quando o tempo acabar
+        this.setState({ answered: true });
+      }
+    }, number);
+  };
 
   render() {
     const { questions } = this.props;
-    const { answered } = this.state;
+    const { answered, timeRemaining } = this.state;
     const currentQuestion = questions[0];
 
     if (!questions || questions.length === 0) {
       return <div>Carregando...</div>;
     }
 
-    const { category, question, correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers } = currentQuestion;
+    const { category, question, correct_answer:
+      correctAnswer, incorrect_answers: incorrectAnswers } = currentQuestion;
 
     const allAnswers = [
       { answer: correctAnswer, correct: true },
@@ -41,16 +71,10 @@ class Questions extends Component {
         <div data-testid="answer-options">
           {allAnswers.map((answerObj, index) => {
             const questionResult = answerObj.correct
-              ? 'correct-answer'
-              : `wrong-answer-${index}`;
+              ? 'correct-answer' : `wrong-answer-${index}`;
 
-            const buttonStyle = answered
-              ? {
-                border: answerObj.correct
-                  ? correctCollor
-                  : incorrectCollor,
-              }
-              : {};
+            const buttonStyle = answered ? { border: answerObj.correct
+              ? correctCollor : incorrectCollor } : {};
 
             return (
               <button
@@ -58,13 +82,20 @@ class Questions extends Component {
                 data-testid={ questionResult }
                 onClick={ () => this.handleAnswerClick(answerObj) }
                 style={ buttonStyle }
-                disabled={ answered }
+                disabled={ answered || timeRemaining === 0 } // Desabilita os botões quando o tempo acabar
               >
                 {answerObj.answer}
               </button>
             );
           })}
         </div>
+        <p>
+          Tempo restante:
+          {' '}
+          {timeRemaining}
+          {' '}
+          segundos
+        </p>
       </div>
     );
   }
@@ -82,6 +113,7 @@ Questions.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+
   questions: state.questions.questions,
 });
 
