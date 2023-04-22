@@ -9,30 +9,83 @@ const incorrectCollor = '3px solid red';
 class Questions extends Component {
   state = {
     answered: false,
+    timeRemaining: 30,
+    allAnswers: [], // Adiciona um novo estado para armazenar as respostas embaralhadas
   };
 
-  handleAnswerClick() {
-    this.setState({
-      answered: true,
-    });
+  componentDidMount() {
+    this.startTimer();
+    const allAnswers = this.shuffleAnswers();
+    this.setState({ allAnswers });
   }
 
-  render() {
+  componentDidUpdate(prevProps) {
+    // Verifica se houve uma atualização nas propriedades "questions"
     const { questions } = this.props;
-    const { answered } = this.state;
+    const { questions: prevQuestions } = prevProps;
+    if (prevQuestions !== questions) {
+      // Se houver, busca e atualiza as novas respostas
+      const allAnswers = this.shuffleAnswers();
+      this.setState({ allAnswers });
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
+  handleAnswerClick() {
+    const number = 25;
+    const { answered, timeRemaining } = this.state;
+    if (!answered && timeRemaining > number) {
+      clearTimeout(this.timer);
+      this.setState({ answered: true });
+    }
+  }
+
+  startTimer = () => {
+    const number = 1000;
+    this.timer = setTimeout(() => {
+      const { timeRemaining } = this.state;
+      if (timeRemaining > 0) {
+        this.setState({ timeRemaining: timeRemaining - 1 });
+        this.startTimer();
+      } else {
+        this.setState({ answered: true });
+      }
+    }, number);
+  };
+
+  shuffleAnswers = () => {
+    const { questions } = this.props;
     const currentQuestion = questions[0];
+
+    if (currentQuestion) {
+      const { correct_answer: correctAnswer,
+        incorrect_answers: incorrectAnswers } = currentQuestion;
+
+      const allAnswers = [
+        { answer: correctAnswer, correct: true },
+        ...incorrectAnswers.map((answer) => ({ answer, correct: false })),
+      ].sort(() => Math.random() - RANDOM_NUMBER);
+
+      return allAnswers;
+    }
+
+    return [];
+  };
+
+  render() {
+    const { answered, timeRemaining, allAnswers } = this.state;
+    const { questions } = this.props;
 
     if (!questions || questions.length === 0) {
       return <div>Carregando...</div>;
     }
 
-    const { category, question, correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers } = currentQuestion;
+    const currentQuestion = questions[0];
 
-    const allAnswers = [
-      { answer: correctAnswer, correct: true },
-      ...incorrectAnswers.map((answer) => ({ answer, correct: false })),
-    ].sort(() => Math.random() - RANDOM_NUMBER);
+    const { category, question } = currentQuestion;
 
     return (
       <div>
@@ -41,16 +94,10 @@ class Questions extends Component {
         <div data-testid="answer-options">
           {allAnswers.map((answerObj, index) => {
             const questionResult = answerObj.correct
-              ? 'correct-answer'
-              : `wrong-answer-${index}`;
+              ? 'correct-answer' : `wrong-answer-${index}`;
 
-            const buttonStyle = answered
-              ? {
-                border: answerObj.correct
-                  ? correctCollor
-                  : incorrectCollor,
-              }
-              : {};
+            const buttonStyle = answered ? { border: answerObj.correct
+              ? correctCollor : incorrectCollor } : {};
 
             return (
               <button
@@ -58,13 +105,21 @@ class Questions extends Component {
                 data-testid={ questionResult }
                 onClick={ () => this.handleAnswerClick(answerObj) }
                 style={ buttonStyle }
-                disabled={ answered }
+                disabled={ answered || timeRemaining === 0 }
               >
                 {answerObj.answer}
-              </button>
+              </button
+              >
             );
           })}
         </div>
+        <p>
+          Tempo restante:
+          {' '}
+          {timeRemaining}
+          {' '}
+          segundos
+        </p>
       </div>
     );
   }
@@ -82,6 +137,7 @@ Questions.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+
   questions: state.questions.questions,
 });
 
