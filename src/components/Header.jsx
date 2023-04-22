@@ -7,7 +7,7 @@ const styleHeader = {
   display: 'flex',
   justifyContent: 'space-around',
   alignItems: 'center',
-  border: '1px solid red',
+  // border: '1px solid red',
 };
 
 class Header extends Component {

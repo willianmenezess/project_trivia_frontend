@@ -4,6 +4,7 @@ import { fetchQuestions } from '../../services/api';
 export const ADD_EMAIL = 'ADD_EMAIL';
 export const ADD_PLAYER = 'ADD_PLAYER';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
+export const ADD_SCORE = 'ADD_SCORE';
 
 // ACTIONS CREATORS
 export const addEmail = (email) => ({
@@ -17,6 +18,13 @@ export const addPlayerName = (player) => ({
   type: ADD_PLAYER,
   payload: {
     player,
+  },
+});
+
+export const addScore = (score) => ({
+  type: ADD_SCORE,
+  payload: {
+    score,
   },
 });
 

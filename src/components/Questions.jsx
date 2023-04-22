@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { addScore } from '../redux/actions';
 
 const RANDOM_NUMBER = 0.5;
 const correctCollor = '3px solid rgb(6, 240, 15)';
@@ -11,6 +12,8 @@ class Questions extends Component {
     answered: false,
     timeRemaining: 30,
     allAnswers: [], // Adiciona um novo estado para armazenar as respostas embaralhadas
+    assertions: 0, // numero de acertos
+    score: 0, // pontuação
   };
 
   componentDidMount() {
@@ -20,28 +23,58 @@ class Questions extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // Verifica se houve uma atualização nas propriedades "questions"
+    // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
     const { questions } = this.props;
     const { questions: prevQuestions } = prevProps;
     if (prevQuestions !== questions) {
-      // Se houver, busca e atualiza as novas respostas
+      // Se houver, embaralha as alternativas da pergunta e coloca no estado para renderizá-las
       const allAnswers = this.shuffleAnswers();
       this.setState({ allAnswers });
     }
   }
 
+  // função executada antes do componente ser removido da tela
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
 
-  handleAnswerClick() {
-    const number = 25;
-    const { answered, timeRemaining } = this.state;
+  handleAnswerClick({ correct }, currentQuestion) {
+    const number = 0;
+    const { answered, timeRemaining, assertions } = this.state;
     if (!answered && timeRemaining > number) {
       clearTimeout(this.timer);
       this.setState({ answered: true });
+
+      if (correct) {
+        this.setState({ assertions: assertions + 1 });
+        this.calculateScore(currentQuestion);
+      }
     }
   }
+
+  calculateScore = (currentQuestion) => {
+    const { score, timeRemaining } = this.state;
+    const { dispatch } = this.props;
+    const NUMBER_FIXED = 10;
+    const three = 3;
+    const two = 2;
+    const one = 1;
+    let fixValue = 1;
+    switch (currentQuestion.difficulty) {
+    case 'hard':
+      fixValue = three;
+      break;
+    case 'medium':
+      fixValue = two;
+      break;
+    default:
+      fixValue = one;
+    }
+    const currentScore = NUMBER_FIXED + (timeRemaining * fixValue);
+    const newScore = score + currentScore;
+    this.setState({ score: newScore });
+    dispatch(addScore(newScore));
+  };
 
   startTimer = () => {
     const number = 1000;
@@ -103,7 +136,7 @@ class Questions extends Component {
               <button
                 key={ index }
                 data-testid={ questionResult }
-                onClick={ () => this.handleAnswerClick(answerObj) }
+                onClick={ () => this.handleAnswerClick(answerObj, currentQuestion) }
                 style={ buttonStyle }
                 disabled={ answered || timeRemaining === 0 }
               >
@@ -134,10 +167,10 @@ Questions.propTypes = {
       incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     }),
   ).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-
   questions: state.questions.questions,
 });
 
