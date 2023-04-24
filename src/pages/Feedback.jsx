@@ -10,6 +10,7 @@ class Feedback extends Component {
     return (
       <section>
         <Header />
+        {/* teste */}
         {assertions < NUMBER_BASE ? <p data-testid="feedback-text">Could be better...</p>
           : <p data-testid="feedback-text">Well Done!</p> }
 
