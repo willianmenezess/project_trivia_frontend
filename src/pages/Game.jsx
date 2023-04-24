@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-// import { fetchQuestionsThunk } from '../redux/actions';
 import { fetchQuestions } from '../services/api';
 import Questions from '../components/Questions';
 
@@ -18,11 +17,12 @@ class Game extends Component {
   }
 
   render() {
+    const { history } = this.props;
     return (
       <section>
         <h3>Game</h3>
         <Header />
-        <Questions />
+        <Questions history={ history } />
       </section>
     );
   }
