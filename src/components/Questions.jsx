@@ -148,18 +148,21 @@ class Questions extends Component {
                 disabled={ answered || timeRemaining === 0 }
               >
                 {answerObj.answer}
-              </button
-              >
+              </button>
             );
           })}
         </div>
-        {answered
-        && <button
-          data-testid="btn-next"
-          onClick={ this.updateCount }
-        >
-          Next
-        </button>}
+        <div>
+          {answered
+          && (
+            <button
+              data-testid="btn-next"
+              onClick={ this.updateCount }
+            >
+              Next
+            </button>
+          )}
+        </div>
         <p>
           Tempo restante:
           {' '}
