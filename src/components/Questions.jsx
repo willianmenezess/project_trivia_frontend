@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addScore } from '../redux/actions';
+import { addScore, addAssertions } from '../redux/actions';
 
 const RANDOM_NUMBER = 0.5;
 const correctCollor = '3px solid rgb(6, 240, 15)';
@@ -58,6 +58,7 @@ class Questions extends Component {
         this.calculateScore(currentQuestion);
       }
     }
+    dispatch(addAssertions(assertions));
   }
 
   calculateScore = (currentQuestion) => {
