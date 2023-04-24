@@ -22,7 +22,7 @@ class Questions extends Component {
     this.shuffleAnswers();
   }
 
-  // componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
   //   // // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
   // const { currentQuestion } = this.state;
   // const { currentQuestion: prevCurrentQuestion } = prevState;
@@ -32,15 +32,14 @@ class Questions extends Component {
   //   this.setState({ allAnswers });
   // }
 
-  //   // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
-  //   const { questions } = this.props;
-  //   const { questions: prevQuestions } = prevProps;
-  //   if (prevQuestions !== questions) {
-  //     // Se houver, embaralha as alternativas da pergunta e coloca no estado para renderizá-las
-  //     const allAnswers = this.shuffleAnswers();
-  //     this.setState({ allAnswers });
-  //   }
-  // }
+    // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
+    const { questions } = this.props;
+    const { questions: prevQuestions } = prevProps;
+    if (prevQuestions !== questions) {
+      // Se houver, embaralha as alternativas da pergunta e coloca no estado para renderizá-las
+      this.shuffleAnswers();
+    }
+  }
 
   // função executada antes do componente ser removido da tela
   componentWillUnmount() {
@@ -115,15 +114,25 @@ class Questions extends Component {
   };
 
   updateCount = () => {
+    const { history } = this.props;
     const { counter } = this.state;
-    this.setState({ counter: counter + 1 });
+    const maxCounter = 4;
+    if (counter < maxCounter) {
+      this.setState({ counter: counter + 1 }, () => {
+        this.shuffleAnswers();
+      });
+      this.setState({ answered: false, timeRemaining: 30 });
+      this.startTimer();
+    } else {
+      history.push('/feedback');
+    }
   };
 
   render() {
     const { answered, timeRemaining, allAnswers, counter } = this.state;
     const { questions } = this.props;
-    if (!questions || questions.length === 0 || allAnswers.length === 0) {
-      this.shuffleAnswers();
+    if (!questions || questions.length === 0) {
+      // this.shuffleAnswers();
       return <div>Carregando...</div>;
     }
     const { category, question } = questions[counter];
@@ -185,6 +194,9 @@ Questions.propTypes = {
     }),
   ).isRequired,
   dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
