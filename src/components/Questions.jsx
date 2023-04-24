@@ -9,6 +9,7 @@ const incorrectCollor = '3px solid red';
 
 class Questions extends Component {
   state = {
+    counter: 0,
     answered: false,
     timeRemaining: 30,
     allAnswers: [], // Adiciona um novo estado para armazenar as respostas embaralhadas
@@ -18,20 +19,28 @@ class Questions extends Component {
 
   componentDidMount() {
     this.startTimer();
-    const allAnswers = this.shuffleAnswers();
-    this.setState({ allAnswers });
+    this.shuffleAnswers();
   }
 
-  componentDidUpdate(prevProps) {
-    // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
-    const { questions } = this.props;
-    const { questions: prevQuestions } = prevProps;
-    if (prevQuestions !== questions) {
-      // Se houver, embaralha as alternativas da pergunta e coloca no estado para renderizá-las
-      const allAnswers = this.shuffleAnswers();
-      this.setState({ allAnswers });
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   // // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
+  // const { currentQuestion } = this.state;
+  // const { currentQuestion: prevCurrentQuestion } = prevState;
+  // if (prevCurrentQuestion !== currentQuestion) {
+  //   // Se houver, embaralha as alternativas da pergunta e coloca no estado para renderizá-las
+  //   const allAnswers = this.shuffleAnswers();
+  //   this.setState({ allAnswers });
+  // }
+
+  //   // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
+  //   const { questions } = this.props;
+  //   const { questions: prevQuestions } = prevProps;
+  //   if (prevQuestions !== questions) {
+  //     // Se houver, embaralha as alternativas da pergunta e coloca no estado para renderizá-las
+  //     const allAnswers = this.shuffleAnswers();
+  //     this.setState({ allAnswers });
+  //   }
+  // }
 
   // função executada antes do componente ser removido da tela
   componentWillUnmount() {
@@ -91,35 +100,33 @@ class Questions extends Component {
 
   shuffleAnswers = () => {
     const { questions } = this.props;
-    const currentQuestion = questions[0];
-
-    if (currentQuestion) {
+    const { counter } = this.state;
+    if (questions.length !== 0) {
       const { correct_answer: correctAnswer,
-        incorrect_answers: incorrectAnswers } = currentQuestion;
+        incorrect_answers: incorrectAnswers } = questions[counter];
 
       const allAnswers = [
         { answer: correctAnswer, correct: true },
         ...incorrectAnswers.map((answer) => ({ answer, correct: false })),
       ].sort(() => Math.random() - RANDOM_NUMBER);
 
-      return allAnswers;
+      this.setState({ allAnswers });
     }
+  };
 
-    return [];
+  updateCount = () => {
+    const { counter } = this.state;
+    this.setState({ counter: counter + 1 });
   };
 
   render() {
-    const { answered, timeRemaining, allAnswers } = this.state;
+    const { answered, timeRemaining, allAnswers, counter } = this.state;
     const { questions } = this.props;
-
-    if (!questions || questions.length === 0) {
+    if (!questions || questions.length === 0 || allAnswers.length === 0) {
+      this.shuffleAnswers();
       return <div>Carregando...</div>;
     }
-
-    const currentQuestion = questions[0];
-
-    const { category, question } = currentQuestion;
-
+    const { category, question } = questions[counter];
     return (
       <div>
         <p data-testid="question-category">{category}</p>
@@ -136,15 +143,25 @@ class Questions extends Component {
               <button
                 key={ index }
                 data-testid={ questionResult }
-                onClick={ () => this.handleAnswerClick(answerObj, currentQuestion) }
+                onClick={ () => this.handleAnswerClick(answerObj, questions[counter]) }
                 style={ buttonStyle }
                 disabled={ answered || timeRemaining === 0 }
               >
                 {answerObj.answer}
-              </button
-              >
+              </button>
             );
           })}
+        </div>
+        <div>
+          {answered
+          && (
+            <button
+              data-testid="btn-next"
+              onClick={ this.updateCount }
+            >
+              Next
+            </button>
+          )}
         </div>
         <p>
           Tempo restante:
