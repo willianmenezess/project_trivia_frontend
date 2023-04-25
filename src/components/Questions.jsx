@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addScore } from '../redux/actions';
+import { addScore, addAssertions } from '../redux/actions';
 
 const RANDOM_NUMBER = 0.5;
 const correctCollor = '3px solid rgb(6, 240, 15)';
@@ -49,13 +49,16 @@ class Questions extends Component {
   handleAnswerClick({ correct }, currentQuestion) {
     const number = 0;
     const { answered, timeRemaining, assertions } = this.state;
+    const { dispatch } = this.props;
     if (!answered && timeRemaining > number) {
       clearTimeout(this.timer);
       this.setState({ answered: true });
 
       if (correct) {
-        this.setState({ assertions: assertions + 1 });
+        const newAssertions = assertions + 1;
+        this.setState({ assertions: newAssertions });
         this.calculateScore(currentQuestion);
+        dispatch(addAssertions(newAssertions));
       }
     }
   }

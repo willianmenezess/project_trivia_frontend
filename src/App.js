@@ -5,7 +5,7 @@ import Game from './pages/Game';
 import Settings from './pages/Settings';
 import './App.css';
 import logo from './trivia.png';
-import FeedBack from './pages/FeedBack';
+import Feedback from './pages/Feedback';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <Route exact path="/" component={ Login } />
           <Route exact path="/game" component={ Game } />
           <Route exact path="/settings" component={ Settings } />
-          <Route exact path="/feedback" component={ FeedBack } />
+          <Route exact path="/feedback" component={ Feedback } />
         </Switch>
       </header>
     </section>

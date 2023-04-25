@@ -5,6 +5,7 @@ export const ADD_EMAIL = 'ADD_EMAIL';
 export const ADD_PLAYER = 'ADD_PLAYER';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
 export const ADD_SCORE = 'ADD_SCORE';
+export const ADD_ASSERTIONS = 'ADD_ASSERTIONS';
 
 // ACTIONS CREATORS
 export const addEmail = (email) => ({
@@ -25,6 +26,13 @@ export const addScore = (score) => ({
   type: ADD_SCORE,
   payload: {
     score,
+  },
+});
+
+export const addAssertions = (assertions) => ({
+  type: ADD_ASSERTIONS,
+  payload: {
+    assertions,
   },
 });
 
