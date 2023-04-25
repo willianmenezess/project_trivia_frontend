@@ -9,6 +9,11 @@ class Feedback extends Component {
     history.push('/');
   };
 
+  handleRankingPage = () => {
+    const { history } = this.props;
+    history.push('/ranking');
+  };
+
   render() {
     const { assertions, score } = this.props;
     const NUMBER_BASE = 3;
@@ -32,6 +37,13 @@ class Feedback extends Component {
             onClick={ this.handleReturnInitialPage }
           >
             Play Again
+          </button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.handleRankingPage }
+          >
+            Ranking
           </button>
         </div>
       </section>
