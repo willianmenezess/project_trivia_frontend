@@ -6,6 +6,7 @@ export const ADD_PLAYER = 'ADD_PLAYER';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
 export const ADD_SCORE = 'ADD_SCORE';
 export const ADD_ASSERTIONS = 'ADD_ASSERTIONS';
+export const RESET_PLAYER = 'RESET_PLAYER';
 
 // ACTIONS CREATORS
 export const addEmail = (email) => ({
@@ -41,6 +42,10 @@ const fetchQuestionSucess = (questions) => ({
   payload: {
     questions,
   },
+});
+
+export const resetPlayer = () => ({
+  type: RESET_PLAYER,
 });
 
 // ACTIONS THUNK

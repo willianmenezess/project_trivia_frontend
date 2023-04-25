@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addEmail, addPlayerName, fetchQuestionsThunk } from '../redux/actions';
+import { addEmail, addPlayerName,
+  fetchQuestionsThunk, resetPlayer } from '../redux/actions';
 import { createToken } from '../services/api';
 
 class Login extends Component {
@@ -36,6 +37,7 @@ class Login extends Component {
     const { inputEmail, inputName } = this.state;
     dispatch(addEmail(inputEmail));
     dispatch(addPlayerName(inputName));
+    dispatch(resetPlayer());
     await createToken();
     dispatch(fetchQuestionsThunk());
     history.push('/game');
