@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
+  handleReturnInitialPage = () => {
+    const { history } = this.props;
+    history.push('/');
+  };
+
   render() {
     const { assertions, score } = this.props;
     const NUMBER_BASE = 3;
@@ -20,6 +25,15 @@ class Feedback extends Component {
             <p data-testid="feedback-total-score">{score}</p>
           </p>
         </p>
+        <div>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ this.handleReturnInitialPage }
+          >
+            Play Again
+          </button>
+        </div>
       </section>
     );
   }
@@ -28,7 +42,10 @@ class Feedback extends Component {
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
-};
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }),
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
