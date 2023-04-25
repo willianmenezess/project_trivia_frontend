@@ -136,7 +136,7 @@ class Questions extends Component {
     const { questions } = this.props;
     if (!questions || questions.length === 0) {
       // this.shuffleAnswers();
-      return <div>Carregando...</div>;
+      return <div>Loading...</div>;
     }
     const { category, question } = questions[counter];
     return (
@@ -176,11 +176,11 @@ class Questions extends Component {
           )}
         </div>
         <p>
-          Tempo restante:
+          Time Remaining:
           {' '}
           {timeRemaining}
           {' '}
-          segundos
+          seconds
         </p>
       </div>
     );

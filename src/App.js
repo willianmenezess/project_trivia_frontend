@@ -6,6 +6,7 @@ import Settings from './pages/Settings';
 import './App.css';
 import logo from './trivia.png';
 import Feedback from './pages/Feedback';
+import Ranking from './pages/Ranking';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/game" component={ Game } />
           <Route exact path="/settings" component={ Settings } />
           <Route exact path="/feedback" component={ Feedback } />
+          <Route exact path="/ranking" component={ Ranking } />
         </Switch>
       </header>
     </section>
