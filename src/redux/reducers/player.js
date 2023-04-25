@@ -1,4 +1,8 @@
-import { ADD_EMAIL, ADD_PLAYER, ADD_SCORE, ADD_ASSERTIONS } from '../actions';
+import { ADD_EMAIL,
+  ADD_PLAYER,
+  ADD_SCORE,
+  ADD_ASSERTIONS,
+  RESET_PLAYER } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
@@ -28,6 +32,12 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       assertions: action.payload.assertions,
+    };
+  case RESET_PLAYER:
+    return {
+      ...state,
+      assertions: 0,
+      score: 0,
     };
   default:
     return state;

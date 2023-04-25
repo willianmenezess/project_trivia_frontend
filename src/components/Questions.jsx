@@ -23,15 +23,6 @@ class Questions extends Component {
   }
 
   componentDidUpdate(prevProps) {
-  //   // // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
-  // const { currentQuestion } = this.state;
-  // const { currentQuestion: prevCurrentQuestion } = prevState;
-  // if (prevCurrentQuestion !== currentQuestion) {
-  //   // Se houver, embaralha as alternativas da pergunta e coloca no estado para renderizá-las
-  //   const allAnswers = this.shuffleAnswers();
-  //   this.setState({ allAnswers });
-  // }
-
     // Verifica se houve uma atualização nas propriedades "questions"(vieram novas 5 perguntas da API, ex: atualizou página)
     const { questions } = this.props;
     const { questions: prevQuestions } = prevProps;
@@ -116,6 +107,24 @@ class Questions extends Component {
     }
   };
 
+  saveRankingData = () => {
+    const { playerName, score } = this.props;
+    const rankingData = localStorage.getItem('ranking');
+
+    const playerData = {
+      name: playerName,
+      score,
+    };
+
+    if (rankingData) {
+      const ranking = JSON.parse(rankingData);
+      ranking.push(playerData);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([playerData]));
+    }
+  };
+
   updateCount = () => {
     const { history } = this.props;
     const { counter } = this.state;
@@ -127,6 +136,7 @@ class Questions extends Component {
       this.setState({ answered: false, timeRemaining: 30 });
       this.startTimer();
     } else {
+      this.saveRankingData();
       history.push('/feedback');
     }
   };
@@ -135,7 +145,6 @@ class Questions extends Component {
     const { answered, timeRemaining, allAnswers, counter } = this.state;
     const { questions } = this.props;
     if (!questions || questions.length === 0) {
-      // this.shuffleAnswers();
       return <div>Loading...</div>;
     }
     const { category, question } = questions[counter];
@@ -200,10 +209,15 @@ Questions.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  playerName: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.questions.questions,
+  playerName: state.player.playerName,
+  email: state.player.email,
+  score: state.player.score,
 });
 
 export default connect(mapStateToProps)(Questions);
