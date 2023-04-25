@@ -20,7 +20,6 @@ class Game extends Component {
     const { history } = this.props;
     return (
       <section>
-        <h3>Game</h3>
         <Header />
         <Questions history={ history } />
       </section>
