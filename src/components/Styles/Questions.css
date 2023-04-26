@@ -1,10 +1,10 @@
 .form-container {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  max-width: 500px;
   margin: 0 auto;
+  max-width: 500px;
+  padding: 20px;
 }
 
 .form-category {
@@ -18,21 +18,21 @@
 }
 
 .form-answer {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-bottom: 20px;
 }
 
 .next-button {
+  background-color: #007bff;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
   padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    margin-top: 20px;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .next-button:hover {
@@ -43,24 +43,25 @@
   font-size: 14px;
 }
 
-@media (max-width: 768px) {
+@media ( max-width : 768px ) {
+
   .form-container {
     max-width: 100%;
     padding: 10px;
   }
-  
+
   .form-category {
     font-size: 16px;
   }
-  
+
   .form-question {
     font-size: 20px;
   }
-  
+
   .next-button {
     font-size: 14px;
   }
-  
+
   .form-timer {
     font-size: 12px;
   }

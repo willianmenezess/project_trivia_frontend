@@ -1,52 +1,48 @@
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.input-name, .input-email {
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+}
+
+.btn-play, .btn-settings {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  padding: 10px;
+  width: 100%;
+}
+
+.btn-play {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-play.disabled {
+  background-color: rgba(0, 123, 255, 0.2);
+  cursor: not-allowed;
+}
+
+.btn-settings {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Estilos para dispositivos móveis */
+
+@media ( max-width : 768px ) {
+
+  .input-name, .input-email, .btn-play, .btn-settings {
+    font-size: 14px;
+    padding: 8px;
   }
-  
-  .input-name,
-  .input-email {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .btn-play,
-  .btn-settings {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .btn-play {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .btn-play.disabled {
-    background-color: rgba(0, 123, 255, 0.2); /* cor mais fraca */
-    cursor: not-allowed;
-  }
-  
-  .btn-settings {
-    background-color: #6c757d;
-    color: #fff;
-  }
-  
-  /* Estilos para dispositivos móveis */
-  @media (max-width: 768px) {
-    .input-name,
-    .input-email,
-    .btn-play,
-    .btn-settings {
-      padding: 8px;
-      font-size: 14px;
-    }
-  }
-  
+}

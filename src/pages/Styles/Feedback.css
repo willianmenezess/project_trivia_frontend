@@ -1,73 +1,69 @@
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.form-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-assertions {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.form-score {
+  font-size: 18px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.form-total-score {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-play-again, .btn-ranking {
+  background-color: #007bff;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-play-again:hover, .btn-ranking:hover {
+  background-color: #0056b3;
+}
+
+@media ( max-width : 768px ) {
+
+  .form-container {
+    max-width: 100%;
+    padding: 10px;
   }
-  
-  .form-message {
-    font-size: 18px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-assertions {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  
-  .form-score {
-    font-size: 18px;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .form-total-score {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  
-  .button-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .btn-play-again,
-  .btn-ranking {
-    padding: 10px 20px;
+
+  .form-assertions, .form-score {
     font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
   }
-  
-  .btn-play-again:hover,
-  .btn-ranking:hover {
-    background-color: #0056b3;
+
+  .btn-play-again, .btn-ranking {
+    font-size: 14px;
   }
-  
-  @media (max-width: 768px) {
-    .form-container {
-      max-width: 100%;
-      padding: 10px;
-    }
-    
-    .form-assertions,
-    .form-score {
-      font-size: 16px;
-    }
-    
-    .btn-play-again,
-    .btn-ranking {
-      font-size: 14px;
-    }
-  }
-  
+}

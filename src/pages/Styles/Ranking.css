@@ -1,81 +1,81 @@
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.form-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.list-container {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-container li {
+  align-items: center;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.player-avatar {
+  margin-right: 10px;
+  width: 50px;
+}
+
+.player-name {
+  flex-grow: 1;
+  font-weight: 700;
+}
+
+.player-score {
+  font-weight: 700;
+}
+
+.btn-go-home {
+  background-color: #007bff;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-go-home:hover {
+  background-color: #0056b3;
+}
+
+@media ( max-width : 768px ) {
+
+  .form-container {
+    max-width: 100%;
+    padding: 10px;
   }
-  
+
   .form-title {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 20px;
   }
-  
-  .list-container {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .list-container li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
+
   .player-avatar {
-    width: 50px;
-    margin-right: 10px;
+    margin-right: 8px;
+    width: 40px;
   }
-  
-  .player-name {
-    flex-grow: 1;
-    font-weight: bold;
+
+  .player-name, .player-score {
+    font-size: 14px;
   }
-  
-  .player-score {
-    font-weight: bold;
-  }
-  
+
   .btn-go-home {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    margin-top: 20px;
+    font-size: 14px;
+    margin-top: 10px;
   }
-  
-  .btn-go-home:hover {
-    background-color: #0056b3;
-  }
-  
-  @media (max-width: 768px) {
-    .form-container {
-      max-width: 100%;
-      padding: 10px;
-    }
-    
-    .form-title {
-      font-size: 20px;
-    }
-    
-    .player-avatar {
-      width: 40px;
-      margin-right: 8px;
-    }
-    
-    .player-name,
-    .player-score {
-      font-size: 14px;
-    }
-    
-    .btn-go-home {
-      font-size: 14px;
-      margin-top: 10px;
-    }
-  }
+}
