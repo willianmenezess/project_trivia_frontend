@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { addEmail, addPlayerName,
   fetchQuestionsThunk, resetPlayer } from '../redux/actions';
 import { createToken } from '../services/api';
+import './Styles/Login.css';
 
 class Login extends Component {
   state = {
@@ -46,8 +47,9 @@ class Login extends Component {
   render() {
     const { inputEmail, inputName, onDisabled } = this.state;
     return (
-      <form>
+      <form className="form-container">
         <input
+          className="input-name"
           data-testid="input-player-name"
           type="text"
           placeholder="nome"
@@ -56,6 +58,7 @@ class Login extends Component {
           value={ inputName }
         />
         <input
+          className="input-email"
           data-testid="input-gravatar-email"
           type="email"
           placeholder="Email"
@@ -64,6 +67,7 @@ class Login extends Component {
           onChange={ this.handleChange }
         />
         <button
+          className={ `btn-play ${onDisabled ? 'disabled' : ''}` }
           data-testid="btn-play"
           type="submit"
           disabled={ onDisabled }
@@ -72,6 +76,7 @@ class Login extends Component {
           Play
         </button>
         <button
+          className="btn-settings"
           data-testid="btn-settings"
           type="button"
           onClick={ () => {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addScore, addAssertions } from '../redux/actions';
+import './Styles/Questions.css';
 
 const RANDOM_NUMBER = 0.5;
 const correctCollor = '3px solid rgb(6, 240, 15)';
@@ -108,12 +109,13 @@ class Questions extends Component {
   };
 
   saveRankingData = () => {
-    const { playerName, score } = this.props;
+    const { playerName, score, email } = this.props;
     const rankingData = localStorage.getItem('ranking');
 
     const playerData = {
       name: playerName,
       score,
+      gravatarEmail: email,
     };
 
     if (rankingData) {
@@ -150,8 +152,10 @@ class Questions extends Component {
     const { category, question } = questions[counter];
     return (
       <div>
-        <p data-testid="question-category">{category}</p>
-        <p data-testid="question-text">{question}</p>
+        <div className="form-container">
+          <p data-testid="question-category" className="form-category">{category}</p>
+          <p data-testid="question-text" className="form-question">{question}</p>
+        </div>
         <div data-testid="answer-options">
           {allAnswers.map((answerObj, index) => {
             const questionResult = answerObj.correct
@@ -173,24 +177,27 @@ class Questions extends Component {
             );
           })}
         </div>
-        <div>
-          {answered
+        <div className="form-container">
+          <div>
+            {answered
           && (
             <button
+              className="next-button"
               data-testid="btn-next"
               onClick={ this.updateCount }
             >
               Next
             </button>
           )}
+          </div>
+          <p className="form-timer">
+            Time Remaining:
+            {' '}
+            {timeRemaining}
+            {' '}
+            seconds
+          </p>
         </div>
-        <p>
-          Time Remaining:
-          {' '}
-          {timeRemaining}
-          {' '}
-          seconds
-        </p>
       </div>
     );
   }
@@ -211,6 +218,7 @@ Questions.propTypes = {
   }).isRequired,
   playerName: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -218,6 +226,7 @@ const mapStateToProps = (state) => ({
   playerName: state.player.playerName,
   email: state.player.email,
   score: state.player.score,
+  gravatarEmail: state.player.gravatarEmail,
 });
 
 export default connect(mapStateToProps)(Questions);
