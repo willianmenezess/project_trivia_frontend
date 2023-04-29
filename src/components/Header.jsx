@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import './Styles/Header.css';
 
 const styleHeader = {
   display: 'flex',
@@ -14,17 +15,18 @@ class Header extends Component {
     const { playerName, email, score } = this.props;
     const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     return (
-      <header style={ styleHeader }>
+      <header style={ styleHeader } className="header-container">
         <img
+          className="header-img"
           src={ gravatar }
           alt={ `${playerName} avatar` }
           data-testid="header-profile-picture"
           style={ { width: '50px' } }
         />
-        <h3 data-testid="header-player-name">
+        <h3 data-testid="header-player-name" className="header-name">
           {playerName}
         </h3>
-        <h4 data-testid="header-score">
+        <h4 data-testid="header-score" className="header-score">
           {score}
         </h4>
       </header>
